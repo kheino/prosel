@@ -32,6 +32,9 @@ public class PropertySelector {
    }
 
    public void setUniversalSelector(UniversalSelector us) {
+      if (us == null)
+         throw new IllegalArgumentException("UniversalSelector 'us' cannot be null");
+
       this.us = us;
    }
 
@@ -63,6 +66,28 @@ public class PropertySelector {
 
    public boolean isExcluded(String name) {
       return (us.isExclude() || excludes.contains(name));
+   }
+
+   @Override
+   public boolean equals(Object obj) {
+      if (obj == this)
+         return true;
+
+      if (!(obj instanceof PropertySelector))
+         return false;
+
+      PropertySelector other = (PropertySelector)obj;
+
+      return (us.equals(other.us) && excludes.equals(other.excludes) && selectors.equals(other.selectors));
+   }
+
+   @Override
+   public int hashCode() {
+      int hash = 1;
+      hash = (13 * hash) + us.hashCode();
+      hash = (17 * hash) + excludes.hashCode();
+      hash = (19 * hash) + selectors.hashCode();
+      return hash;
    }
 
    @Override
