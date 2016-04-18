@@ -53,7 +53,7 @@ public class UniversalSelector {
          case -1:
             return "!*";
          case 0:
-            return "**";
+            return "*";
          case 1:
             return "*?";
          default:

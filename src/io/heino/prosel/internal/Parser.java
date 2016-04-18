@@ -56,20 +56,20 @@ public class Parser {
       }
       // Universal selectors
       else if (lexer.trySkip(TokenType.ASTER)) {
-         // All: **
-         if (lexer.trySkip(TokenType.ASTER)) {
-            ps.setUniversalSelector(UniversalSelector.ALL);
+         // Limit: *N
+         if (lexer.hasNext(TokenType.INT)){
+            ValueToken t = (ValueToken)next(TokenType.INT);
+            // TODO: t.getValue() is NOT clamped to integer range
+            ps.setUniversalSelector(
+                  new UniversalSelector(Integer.parseInt(t.getValue())));
          }
          // Block: *?
          else if (lexer.trySkip(TokenType.QUEST)) {
             ps.setUniversalSelector(UniversalSelector.BLOCK);
          }
-         // Limit: *N
+         // All: *
          else {
-            ValueToken t = (ValueToken)next(TokenType.INT);
-            // TODO: t.getValue() is NOT clamped to integer range
-            ps.setUniversalSelector(
-                  new UniversalSelector(Integer.parseInt(t.getValue())));
+            ps.setUniversalSelector(UniversalSelector.ALL);
          }
       }
       // Select property: name [ : { ... } ]
